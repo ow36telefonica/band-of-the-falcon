@@ -1,12 +1,12 @@
 window.RICKERT_DATA = {
-    "timestamp": "2026-11-01 15:35:58",
+    "timestamp": "2026-11-01 15:38:18",
     "active_model": "Gemini 3.8 Flash (High)",
-    "total_tokens": 65785,
+    "total_tokens": 81409,
     "token_limit": 20000000,
-    "token_fill": 0.33,
-    "total_requests": 11,
+    "token_fill": 0.41,
+    "total_requests": 14,
     "req_limit": 1000,
-    "req_fill": 1.1,
+    "req_fill": 1.4,
     "weekly_left": 100,
     "roster": [
         {
@@ -24,8 +24,8 @@ window.RICKERT_DATA = {
             "role": "千人長 (司令塔)",
             "avatar": "assets/avatars/casca.png",
             "status": "done",
-            "tokensUsed": 45281,
-            "reqsUsed": 7,
+            "tokensUsed": 55830,
+            "reqsUsed": 9,
             "activeFile": "",
             "activeTask": "戦況把握・全軍統括"
         },
@@ -64,8 +64,8 @@ window.RICKERT_DATA = {
             "role": "輸送・デプロイ",
             "avatar": "assets/avatars/pippin.png",
             "status": "working",
-            "tokensUsed": 20504,
-            "reqsUsed": 4,
+            "tokensUsed": 25579,
+            "reqsUsed": 5,
             "activeFile": "",
             "activeTask": "特殊工作コマンド実行",
             "isBranded": false,
@@ -392,6 +392,38 @@ window.RICKERT_DATA = {
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
             "time": "11/01 15:35:49",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:36:02",
+            "body": "<strong>【任務開始】`auto_sync_push.py` 内の subprocess に `encoding='utf-8', errors='replace'` を指定し、文字コード耐性を堅牢化します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:36:09",
+            "body": "<strong>【任務開始】commit / push の subprocess 呼び出しにも `encoding=\"utf-8\", errors=\"replace\"` を追加します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:36:31",
+            "body": "<strong>【任務開始】差分なし状態の判定テストを実行します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:36:31",
             "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
             "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
         }

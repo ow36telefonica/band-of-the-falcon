@@ -92,7 +92,9 @@ def check_and_push(falcon_root, quiet=False):
         ["git", "status", "--porcelain"],
         cwd=falcon_root,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     if status_res.returncode != 0:
         if not quiet:
@@ -127,7 +129,9 @@ def check_and_push(falcon_root, quiet=False):
         ["git", "commit", "-m", commit_msg],
         cwd=falcon_root,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     if commit_res.returncode != 0:
         print(f"【エラー】コミット失敗: {commit_res.stderr}")
@@ -138,7 +142,9 @@ def check_and_push(falcon_root, quiet=False):
         ["git", "push", "origin", "main"],
         cwd=falcon_root,
         capture_output=True,
-        text=True
+        text=True,
+        encoding="utf-8",
+        errors="replace"
     )
     if push_res.returncode == 0:
         print(f"【自動プッシュ成功】GitHub (origin/main) への同期が完了しました！ ({now_str})")
