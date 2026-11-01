@@ -456,11 +456,27 @@ def analyze_transcript():
         except Exception as e:
             print(f"Export Error: {e}")
 
+def trigger_falcon_auto_sync():
+    """鷹の団リソースの変更を自動検知して GitHub へプッシュ"""
+    try:
+        falcon_script = r"C:\Users\xanth\band-of-the-falcon\auto_sync_push.py"
+        if os.path.exists(falcon_script):
+            subprocess.run(
+                [sys.executable, falcon_script, "--quiet"],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+    except Exception:
+        pass
+
 if __name__ == "__main__":
     import sys
     IS_ONCE_MODE = "--once" in sys.argv
     print(f"Rickert Monitor Active. (Mode: {'Once' if IS_ONCE_MODE else 'Loop'})")
+    loop_count = 0
     while True:
+        loop_count += 1
         try:
             transcript_path = get_transcript_path()
             if transcript_path:
@@ -468,5 +484,10 @@ if __name__ == "__main__":
                 print(f"Update complete: {datetime.now().strftime('%H:%M:%S')}")
             else: print("No transcript found.")
         except Exception as e: print(f"Error: {e}")
+
+        # 60秒（20ループ）ごとに鷹の団の自動同期＆プッシュを静かに実行
+        if loop_count % 20 == 0:
+            trigger_falcon_auto_sync()
+
         if IS_ONCE_MODE: break
         time.sleep(3)

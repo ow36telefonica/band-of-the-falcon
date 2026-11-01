@@ -76,3 +76,9 @@
   * 試合結果（`/result/YYYY.php#YYYYMMDD`）および写真レポート（`/report/YYYYMMDD.php`）の双方を掲載。9件目以降は必ず `<!-- 過去のニュース` コメントアウト領域へ格納せよ。
 * **連動更新セット**:
   * レポート・結果追加時は、`result/YYYY.php`（勝者名・アンカー・リンク）、`schedule/YYYY.php`（結果PDF差し替え）、`report/index.php`（レポート一覧追記）、`includes/report.php` / `includes/report2.php`（サイドバー最新追加）、`index.php`（8行枠）をワンセットで連動更新すること。
+
+
+## 13. 鷹の団リソース自動同期規約 (Falcon Auto-Sync Protocol)
+* **リポジトリ**: `band-of-the-falcon` (GitHub Private)
+* **自動同期の鉄則**: 鷹の団の軍規（`GEMINI.md`）、団員プロンプト（`.gemini/agents/*.md`）、スキル群、兵站司令室、インジケーター、業務スクリプトを変更した際は、自律的に `python C:\Users\xanth\band-of-the-falcon\auto_sync_push.py` を実行、または常駐監視プロセス（`update_logistics.py`）によりバックグラウンドで自動的に GitHub へ差分プッシュを行うこと。
+* **恒久保全の原則**: ローカルの改善・反省による軍規改定は、即座にクラウドへ完全バックアップされ、他PCへの即時展開体制を常に維持しなければならない。

@@ -1,12 +1,12 @@
 window.RICKERT_DATA = {
-    "timestamp": "2026-11-01 15:38:18",
+    "timestamp": "2026-11-01 15:44:04",
     "active_model": "Gemini 3.8 Flash (High)",
-    "total_tokens": 81409,
+    "total_tokens": 122642,
     "token_limit": 20000000,
-    "token_fill": 0.41,
-    "total_requests": 14,
+    "token_fill": 0.61,
+    "total_requests": 22,
     "req_limit": 1000,
-    "req_fill": 1.4,
+    "req_fill": 2.2,
     "weekly_left": 100,
     "roster": [
         {
@@ -24,8 +24,8 @@ window.RICKERT_DATA = {
             "role": "千人長 (司令塔)",
             "avatar": "assets/avatars/casca.png",
             "status": "done",
-            "tokensUsed": 55830,
-            "reqsUsed": 9,
+            "tokensUsed": 76439,
+            "reqsUsed": 13,
             "activeFile": "",
             "activeTask": "戦況把握・全軍統括"
         },
@@ -64,8 +64,8 @@ window.RICKERT_DATA = {
             "role": "輸送・デプロイ",
             "avatar": "assets/avatars/pippin.png",
             "status": "working",
-            "tokensUsed": 25579,
-            "reqsUsed": 5,
+            "tokensUsed": 35909,
+            "reqsUsed": 7,
             "activeFile": "",
             "activeTask": "特殊工作コマンド実行",
             "isBranded": false,
@@ -85,11 +85,11 @@ window.RICKERT_DATA = {
             "name": "エリカ",
             "role": "司令室保守",
             "avatar": "assets/avatars/erica.png",
-            "status": "standby",
-            "tokensUsed": 0,
-            "reqsUsed": 0,
+            "status": "done",
+            "tokensUsed": 10294,
+            "reqsUsed": 2,
             "activeFile": "",
-            "activeTask": "ダッシュボード・UI改修"
+            "activeTask": "リッケルト監視網・UI保守"
         },
         {
             "name": "ファルネーゼ",
@@ -424,6 +424,102 @@ window.RICKERT_DATA = {
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
             "time": "11/01 15:36:31",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
+        },
+        {
+            "sender": "casca",
+            "name": "エリカ",
+            "avatar": "assets/avatars/erica.png",
+            "time": "11/01 15:38:23",
+            "body": "<strong>【任務開始】`update_logistics.py` の末尾ループ部分を確認します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "エリカ",
+            "avatar": "assets/avatars/erica.png",
+            "time": "11/01 15:38:23",
+            "body": "<strong>エリカ: 監視網（リッケルト）の火加減を調整したよ。これでバッチリ！</strong>",
+            "embed": "【工作内容】\n> powershell -Command \"Get-Content 'C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\\docs\\rickert_dashboard\\update_logistics.py' -Tail 30\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:38:37",
+            "body": "<strong>【任務開始】`update_logistics.py` に鷹の団自動同期連携（バックグラウンド監視）を組み込みます。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:39:56",
+            "body": "<strong>【任務開始】更新された `update_logistics.py` で常駐プロセスをリロードします。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "エリカ",
+            "avatar": "assets/avatars/erica.png",
+            "time": "11/01 15:40:01",
+            "body": "<strong>【任務開始】自動プッシュ連携付きの `update_logistics.py` をバックグラウンド起動します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "エリカ",
+            "avatar": "assets/avatars/erica.png",
+            "time": "11/01 15:40:01",
+            "body": "<strong>エリカ: 監視網（リッケルト）の火加減を調整したよ。これでバッチリ！</strong>",
+            "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\\docs\\rickert_dashboard\\update_logistics.py\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:41:07",
+            "body": "<strong>【任務開始】新タスク `task-1142` の起動ログを確認します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:41:12",
+            "body": "<strong>【任務開始】`C:\\Users\\xanth\\GEMINI.md` の末尾を確認します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:41:12",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> powershell -Command \"Get-Content 'C:\\Users\\xanth\\GEMINI.md' -Tail 15\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 15:41:26",
+            "body": "<strong>【任務開始】`C:\\Users\\xanth\\GEMINI.md` に第13条「鷹の団リソース自動同期規約」を追加します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:41:42",
+            "body": "<strong>【任務開始】`auto_sync_push.py` を実行し、第13条追加の差分が自動で GitHub へプッシュされるか確認します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 15:41:42",
             "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
             "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
         }
