@@ -459,8 +459,19 @@ def analyze_transcript():
 def trigger_falcon_auto_sync():
     """鷹の団リソースの変更を自動検知して GitHub へプッシュ"""
     try:
-        falcon_script = r"C:\Users\xanth\band-of-the-falcon\auto_sync_push.py"
-        if os.path.exists(falcon_script):
+        home_dir = os.path.expanduser("~")
+        candidates = [
+            os.path.join(home_dir, "band-of-the-falcon", "auto_sync_push.py"),
+            r"C:\work\band-of-the-falcon\auto_sync_push.py",
+            r"C:\Users\xanth\band-of-the-falcon\auto_sync_push.py",
+        ]
+        falcon_script = None
+        for c in candidates:
+            if os.path.exists(c):
+                falcon_script = c
+                break
+
+        if falcon_script:
             subprocess.run(
                 [sys.executable, falcon_script, "--quiet"],
                 capture_output=True,

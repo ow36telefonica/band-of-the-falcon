@@ -1,8 +1,11 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
+const path = require('path');
+const os = require('os');
+
 const SPREADSHEET_ID = '1uR33VUcSIVwLNz5eKbgo5K6bTc8Tty_Lhq5KVCUkx4o';
-const KEY_FILE = 'C:\\Users\\xanth\\.gemini\\keys\\project-17a1beab-7091-49c2-abf-194f51168a14.json';
+const KEY_FILE = process.env.GOOGLE_SHEETS_KEY_FILE || path.join(os.homedir(), '.gemini', 'keys', 'project-17a1beab-7091-49c2-abf-194f51168a14.json');
 const creds = require(KEY_FILE);
 
 const serviceAccountAuth = new JWT({
