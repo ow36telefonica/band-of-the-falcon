@@ -1,12 +1,12 @@
 window.RICKERT_DATA = {
-    "timestamp": "2026-11-01 20:17:17",
+    "timestamp": "2026-11-01 20:24:43",
     "active_model": "Gemini 3.8 Flash (High)",
-    "total_tokens": 31017,
+    "total_tokens": 88019,
     "token_limit": 20000000,
-    "token_fill": 0.16,
-    "total_requests": 6,
+    "token_fill": 0.44,
+    "total_requests": 16,
     "req_limit": 1000,
-    "req_fill": 0.6,
+    "req_fill": 1.6,
     "weekly_left": 100,
     "roster": [
         {
@@ -24,8 +24,8 @@ window.RICKERT_DATA = {
             "role": "千人長 (司令塔)",
             "avatar": "assets/avatars/casca.png",
             "status": "done",
-            "tokensUsed": 25876,
-            "reqsUsed": 5,
+            "tokensUsed": 62224,
+            "reqsUsed": 11,
             "activeFile": "",
             "activeTask": "戦況把握・全軍統括"
         },
@@ -64,8 +64,8 @@ window.RICKERT_DATA = {
             "role": "輸送・デプロイ",
             "avatar": "assets/avatars/pippin.png",
             "status": "working",
-            "tokensUsed": 5141,
-            "reqsUsed": 1,
+            "tokensUsed": 25795,
+            "reqsUsed": 5,
             "activeFile": "",
             "activeTask": "特殊工作コマンド実行",
             "isBranded": false,
@@ -316,6 +316,122 @@ window.RICKERT_DATA = {
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
             "time": "11/01 20:14:21",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 20:17:23",
+            "body": "**まったく問題ございません！大正解です、グリフィス団長。**\n\n`C:\\work\\band-of-the-falcon` という配置は、Windows の作業フォルダとして非常に見通しが良く、何一つまずい点はございません。\n\n---\n\n### なぜ `C:\\work` で問題ないのか？\n\n1. **自己位置の動的判定**:\n   自動インストーラー（`install.py`）は、自身がどこ（`C:\\work` でも `C:\\Users` でも）に置かれていても、**「自分が置かれている場所から ... (以下省略)"
+        },
+        {
+            "sender": "agent",
+            "name": "グリフィス団長",
+            "avatar": "assets/avatars/griffith.png",
+            "time": "11/01 20:20:41",
+            "body": "<USER_REQUEST>\nこれ新PCc://users/userにも.geminiがあるんだけど\n</USER_REQUEST>"
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 20:20:41",
+            "body": "**それで正常です！まったく問題ございません、グリフィス団長。**\n\nAntigravity や Gemini CLI を導入したことがあるPCには、自動的にその `C:\\Users\\user\\.gemini` フォルダが作成されます。\n\n---\n\n### 1. `install.py` を実行しても安全か？\n\n**100% 安全です。既存のフォルダが消えたり壊れたりすることは一切ありません。**\n\n`install.py` は、既にある `.gemini` フォルダを丸ごと上書きするのではなく ... (以下省略)"
+        },
+        {
+            "sender": "agent",
+            "name": "グリフィス団長",
+            "avatar": "assets/avatars/griffith.png",
+            "time": "11/01 20:22:12",
+            "body": "<USER_REQUEST>\nいやそれがその末尾a14.jsonをうっかりGeminiアプリのチャットに貼り付けて送信してしまい　console.google.comからこれ削除して　新たにKey作り直したのよ\n</USER_REQUEST>"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:22:12",
+            "body": "<strong>【任務開始】メインPCの `C:\\Users\\xanth\\.gemini\\keys` 内の鍵ファイル状況を確認します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:22:12",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> powershell -Command \"Get-ChildItem 'C:\\Users\\xanth\\.gemini\\keys'\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 20:22:27",
+            "body": "<strong>【任務開始】`manage-sheet.js` に「最新認証鍵の全自動探索ロジック」を実装します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 20:23:43",
+            "body": "<strong>【任務開始】`band-of-the-falcon` 側の `manage-sheet.js` にも最新鍵自動探索ロジックを反映します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:02",
+            "body": "<strong>【任務開始】メインPCの古い失効鍵を `.bak` に退避します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:02",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> powershell -Command \"Rename-Item -Path 'C:\\Users\\xanth\\.gemini\\keys\\project-17a1beab-7091-49c2-abf-194f51168a14.json' -NewName 'project-17a1beab-7091-"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:13",
+            "body": "<strong>【任務開始】新しい認証鍵での Google Sheets 疎通テスト（`manage-sheet.js list`）を実行します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:13",
+            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
+            "embed": "【工作内容】\n> powershell -Command \"node 'C:\\Users\\xanth\\scripts\\sheet-manager\\manage-sheet.js' list\""
+        },
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "assets/avatars/casca.png",
+            "time": "11/01 20:24:28",
+            "body": "<strong>【任務開始】疎通タスクの完了を待機します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:38",
+            "body": "<strong>【任務開始】`auto_sync_push.py` を実行して、最新鍵自動探索ロジックを GitHub へプッシュします。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/01 20:24:38",
             "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
             "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\""
         }

@@ -3,9 +3,37 @@ const { JWT } = require('google-auth-library');
 
 const path = require('path');
 const os = require('os');
+const fs = require('fs');
 
 const SPREADSHEET_ID = '1uR33VUcSIVwLNz5eKbgo5K6bTc8Tty_Lhq5KVCUkx4o';
-const KEY_FILE = process.env.GOOGLE_SHEETS_KEY_FILE || path.join(os.homedir(), '.gemini', 'keys', 'project-17a1beab-7091-49c2-abf-194f51168a14.json');
+
+/**
+ * ~/.gemini/keys/ から最新の有効な認証鍵 (JSON) を自動探索
+ */
+function findLatestKeyFile() {
+  if (process.env.GOOGLE_SHEETS_KEY_FILE && fs.existsSync(process.env.GOOGLE_SHEETS_KEY_FILE)) {
+    return process.env.GOOGLE_SHEETS_KEY_FILE;
+  }
+  const keysDir = path.join(os.homedir(), '.gemini', 'keys');
+  if (!fs.existsSync(keysDir)) {
+    throw new Error(`認証鍵ディレクトリが見つかりません: ${keysDir}`);
+  }
+  const files = fs.readdirSync(keysDir)
+    .filter(f => f.endsWith('.json') && !f.endsWith('.bak'))
+    .map(f => ({
+      name: f,
+      path: path.join(keysDir, f),
+      mtime: fs.statSync(path.join(keysDir, f)).mtimeMs
+    }))
+    .sort((a, b) => b.mtime - a.mtime);
+
+  if (files.length === 0) {
+    throw new Error(`認証鍵 (.json) が見つかりません: ${keysDir}`);
+  }
+  return files[0].path;
+}
+
+const KEY_FILE = findLatestKeyFile();
 const creds = require(KEY_FILE);
 
 const serviceAccountAuth = new JWT({
