@@ -1,0 +1,39 @@
+# ============================================================
+# 鷹の団 統合リポジトリ 除外軍規 (.gitignore)
+# ============================================================
+
+# 秘密鍵・認証クレデンシャル（絶対漏洩防止）
+keys/
+*.pem
+*.key
+*.pfx
+*.p12
+.env
+.env.*
+!.env.example
+
+# Node.js 依存パッケージ
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python キャッシュ・一時ファイル
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+*.tmp
+
+# 日々の実務ログ（個別案件ログ）
+*-log.md
+logistics_*.log
+
+# OS・エディタ一時ファイル
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~

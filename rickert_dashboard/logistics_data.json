@@ -1,0 +1,130 @@
+{
+    "timestamp": "2026-05-25 00:35:00",
+    "total_tokens": 1450000,
+    "token_limit": 10000000,
+    "token_fill": 14.5,
+    "total_requests": 85,
+    "req_limit": 200,
+    "req_fill": 42.5,
+    "weekly_left": 85,
+    "roster": [
+        {
+            "name": "グリフィス",
+            "role": "団長 (最高責任者)",
+            "avatar": "G",
+            "status": "standby",
+            "label": "グリフィス",
+            "active": true,
+            "tokensUsed": 500,
+            "reqsUsed": 5
+        },
+        {
+            "name": "キャスカ",
+            "role": "千人長 (司令塔)",
+            "avatar": "C",
+            "status": "working",
+            "label": "Gemini",
+            "active": true,
+            "tokensUsed": 1050000,
+            "reqsUsed": 45
+        },
+        {
+            "name": "ガストン",
+            "role": "リスト作成・計画",
+            "avatar": "Gs",
+            "status": "done",
+            "label": "gaston",
+            "active": true,
+            "tokensUsed": 35000,
+            "reqsUsed": 3
+        },
+        {
+            "name": "ガッツ",
+            "role": "ソース修正・実行",
+            "avatar": "Gt",
+            "status": "done",
+            "label": "guts",
+            "active": true,
+            "tokensUsed": 45000,
+            "reqsUsed": 12
+        },
+        {
+            "name": "コルカス",
+            "role": "ソースチェック・検証",
+            "avatar": "Co",
+            "status": "done",
+            "label": "corkus",
+            "active": true,
+            "tokensUsed": 380000,
+            "reqsUsed": 25
+        },
+        {
+            "name": "ピピン",
+            "role": "GitHub管理・輸送",
+            "avatar": "P",
+            "status": "done",
+            "label": "pippin",
+            "active": true,
+            "tokensUsed": 25000,
+            "reqsUsed": 8
+        },
+        {
+            "name": "ジュドー",
+            "role": "外検・偵察",
+            "avatar": "J",
+            "status": "done",
+            "label": "judeau",
+            "active": true,
+            "tokensUsed": 15000,
+            "reqsUsed": 5
+        }
+    ],
+    "comm_logs": [
+        {
+            "sender": "casca",
+            "name": "キャスカ",
+            "avatar": "C",
+            "time": "05/25 00:25:12",
+            "body": "本日の全任務、完了いたしました！ GitHub Actions による自動デプロイの成功は、鷹の団にとって大きな転換点です。"
+        },
+        {
+            "sender": "agent",
+            "name": "グリフィス (団長)",
+            "avatar": "G",
+            "time": "05/25 00:30:45",
+            "body": "各団員たちに今回の任務の改善点があれば提出させよ。改善点はリッケルトの鍜治場に投稿しておくように。"
+        }
+    ],
+    "proposals": [
+        {
+            "proposer": "gs",
+            "title": "兵站モニターのリアルタイム化",
+            "desc": "GitHub Actionsの実行ステータスをダッシュボード上でリアルタイムに監視し、デプロイ完了までの待機時間を可視化すべきだ。"
+        },
+        {
+            "proposer": "gt",
+            "title": "アンカー先IDの先行作成",
+            "desc": "ページ内ジャンプを伴うリンクを作成する際は、必ず飛び先のID（アンカー）を先に作成することを軍規に加える。二度手間はかけさせねえ。"
+        },
+        {
+            "proposer": "co",
+            "title": "規約チェックリストの事前提示",
+            "desc": "ルート相対パスの使用など、プロジェクト固有のコーディング規約を、実行前にガッツたちへ厳しく周知徹底させる必要がある。"
+        },
+        {
+            "proposer": "j",
+            "title": "キャッシュ無効化による本番偵察",
+            "desc": "本番環境の偵察時は、ブラウザキャッシュを完全に無効化した状態での巡回を徹底し、一秒でも早く確実な情報を団長へ届けるよ。"
+        },
+        {
+            "proposer": "p",
+            "title": "デプロイエラーの予見精度向上",
+            "desc": "環境変数（Secrets）の不一致など、デプロイ失敗の要因を事前にシミュレートし、静かに、確実に反映させる……。"
+        },
+        {
+            "proposer": "c",
+            "title": "指揮命令の具体化・冷徹化",
+            "desc": "再修正が必要な際、不備の箇所と修正方法をより具体的（ID名指定など）に指示することで、手戻りを最小限に抑えることを誓います。"
+        }
+    ]
+}

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICKERT - 鷹の団 兵站・通信ダッシュボード</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #080a0c;
+            --panel-bg: rgba(18, 22, 28, 0.7);
+            --border-color: rgba(212, 175, 55, 0.2);
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.5);
+            --gold-dim: #aa8c2c;
+            --text-primary: #f8f9fa;
+            --text-secondary: #a0aec0;
+            --text-dim: #4a5568;
+            --alert-green: #2ecc71;
+            --alert-amber: #f39c12;
+            --alert-red: #e74c3c;
+            --work-healthy: #2ecc71;
+            --work-tiring: #f39c12;
+            --work-critical: #e74c3c;
+            --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        a {
+            color: #63b3ed;
+            text-decoration: underline;
+            transition: var(--transition-smooth);
+        }
+        a:hover {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+        
+        .glass-panel { 
+            background: var(--panel-bg); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            transition: var(--transition-smooth);
+        }
+        .glass-panel:hover { border-color: var(--gold-glow); }
+
+        .dashboard-container { display: grid; grid-template-rows: 70px 1fr; height: 100vh; padding: 20px; gap: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 0 30px; }
+        .logo-area { display: flex; align-items: center; gap: 16px; }
+        .logo-image { width: 34px; height: 34px; filter: drop-shadow(0 0 10px var(--gold-glow)); }
+        .rickert-icon { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border-color); object-fit: cover; filter: drop-shadow(0 0 8px var(--gold-glow)); }
+        .logo-text h1 { font-size: 22px; font-weight: 800; letter-spacing: 2px; background: linear-gradient(135deg, #fff 30%, var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .tactical-status { display: flex; align-items: center; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+        .indicator-group { display: flex; align-items: center; gap: 10px; }
+        .sync-indicator { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+        .sync-success { color: var(--alert-green); background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .sync-error { color: var(--alert-red); background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); }
+
+        .gh-status { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 10px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: var(--transition-smooth); }
+        .gh-success { color: var(--alert-green); background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .gh-working { color: var(--alert-amber); background: rgba(243, 156, 18, 0.1); border: 1px solid rgba(243, 156, 18, 0.3); animation: pulse-blink 2s infinite; }
+        .gh-failure { color: var(--alert-red); background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); }
+        @keyframes pulse-blink { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        main { display: grid; grid-template-columns: 320px 1fr 380px; gap: 20px; height: calc(100vh - 130px); min-height: 0; }
+        .logistics-col, .comm-col, .forge-col { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+        .panel-padding { padding: 24px; }
+        .section-title { font-size: 13px; font-weight: 700; color: var(--gold); border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .refresh-btn { 
+            background: transparent; border: none; color: var(--text-secondary); cursor: pointer; transition: 0.3s; 
+            font-size: 14px; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%;
+        }
+        .refresh-btn:hover { color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+        .refresh-btn.spinning { animation: spin 0.8s linear infinite; color: var(--gold); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .resource-meter { margin-bottom: 20px; }
+        .meter-label { display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 8px; font-weight: 700; color: var(--text-secondary); }
+        .progress-bar-container { width: 100%; height: 4px; background: rgba(0, 0, 0, 0.5); border-radius: 2px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dim), var(--gold), #fff); transition: width 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        .roster-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-right: 6px; }
+        .roster-item { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; transition: var(--transition-smooth); }
+        .roster-item:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(212, 175, 55, 0.3); transform: translateX(5px); }
+        .member-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .member-avatar { 
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(212, 175, 55, 0.05); 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            border: 2px solid var(--border-color); box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            cursor: pointer; transition: var(--transition-smooth);
+        }
+        .member-avatar:hover { transform: scale(1.1); border-color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); }
+        .member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Modal Styles */
+        .modal-base {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 20000; opacity: 0; transition: opacity 0.4s ease;
+        }
+        .modal-base.show { display: flex; opacity: 1; }
+        .modal-content {
+            position: relative; border: 4px solid var(--gold); border-radius: 24px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+            overflow: hidden; transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--bg-color);
+        }
+        .modal-base.show .modal-content { transform: scale(1); }
+
+        /* Avatar Specific */
+        #avatar-modal { cursor: zoom-out; }
+        .avatar-modal-content { max-width: 80vh; max-height: 80vh; }
+        .modal-content img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        
+        /* Log Specific */
+        .log-modal-content { width: 80%; max-width: 900px; height: 80vh; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px 30px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 20px; transition: 0.3s; }
+        .close-btn:hover { color: var(--alert-red); }
+        .log-content-body { padding: 30px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--text-primary); white-space: pre-wrap; }
+
+        .log-item { 
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: 0.3s;
+        }
+        .log-item:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--gold-dim); transform: translateX(5px); }
+        .log-date { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .log-summary { font-size: 9px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .modal-info {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 40px 20px 20px; text-align: center;
+        }
+        .modal-name { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .modal-role { font-size: 14px; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; margin-top: 4px; }
+        .member-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+        .member-role { font-size: 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .active-file-tag {
+            font-size: 9px; color: var(--gold); margin-top: 4px; background: rgba(212, 175, 55, 0.1); 
+            padding: 2px 8px; border-radius: 4px; display: inline-block; border: 1px solid rgba(212, 175, 55, 0.2);
+            font-family: 'JetBrains Mono';
+        }
+
+        .active-task-tag {
+            font-size: 9px; color: #63b3ed; margin-top: 3px; background: rgba(99, 179, 237, 0.1); 
+            padding: 2px 8px; border-radius: 4px; display: inline-block; border: 1px solid rgba(99, 179, 237, 0.25);
+            font-family: 'JetBrains Mono'; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;
+        }
+
+        .rest-required-tag {
+            font-size: 8px; font-weight: 900; color: #fff; background: var(--alert-red);
+            padding: 1px 6px; border-radius: 4px; margin-left: 8px;
+            animation: pulse-danger 1s infinite; vertical-align: middle;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes pulse-danger { 0% { opacity: 0.6; box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 50% { opacity: 1; box-shadow: 0 0 0 6px rgba(231, 76, 60, 0); } 100% { opacity: 0.6; box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
+
+        .brand-mark-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 4px;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .brand-mark-icon {
+            height: 24px;
+            width: auto;
+            filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.9));
+            animation: brand-pulse 2s infinite alternate;
+        }
+        @keyframes brand-pulse {
+            0% { filter: drop-shadow(0 0 3px #e74c3c); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 10px #ff0000); transform: scale(1.18); }
+        }
+
+        /* 魔女の護符による封印状態の表示 */
+        .brand-mark-wrapper.sealed .brand-mark-icon {
+            filter: drop-shadow(0 0 6px #00d2ff) opacity(0.7);
+            animation: amulet-seal-pulse 3s infinite alternate;
+        }
+        @keyframes amulet-seal-pulse {
+            0% { filter: drop-shadow(0 0 3px #0099ff) opacity(0.65); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 12px #00f2fe) opacity(0.9); transform: scale(1.05); }
+        }
+        .amulet-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            font-size: 10px;
+            color: #00f2fe;
+            filter: drop-shadow(0 0 6px #00f2fe);
+            animation: amulet-float 2s infinite ease-in-out alternate;
+        }
+        @keyframes amulet-float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+
+        .circular-gauge { position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+        .circular-gauge svg { transform: rotate(-90deg); }
+        .gauge-bg { fill: none; stroke: rgba(0, 0, 0, 0.3); stroke-width: 3; }
+        .gauge-fill { fill: none; stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s ease-out; }
+        .gauge-text { position: absolute; font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text-primary); }
+        .pulse-gauge { animation: gauge-pulse 2s infinite; }
+        @keyframes gauge-pulse { 0%, 100% { filter: drop-shadow(0 0 2px var(--alert-red)); } 50% { filter: drop-shadow(0 0 8px var(--alert-red)); } }
+
+        .chat-area { flex-grow: 1; overflow-y: auto; overflow-x: hidden; padding: 20px; display: flex; flex-direction: column; gap: 16px; min-height: 0; scroll-behavior: smooth; }
+        .message-row { display: flex; gap: 12px; animation: slide-up 0.3s ease-out both; width: 100%; min-width: 0; box-sizing: border-box; }
+        .message-row.sender-agent { flex-direction: row-reverse; }
+        .message-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-color); flex-shrink: 0; }
+        .message-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .message-wrapper { display: flex; flex-direction: column; max-width: 85%; min-width: 0; box-sizing: border-box; }
+        .message-body { background: rgba(30, 41, 59, 0.4); border-radius: 16px; padding: 12px 16px; font-size: 13px; line-height: 1.6; word-break: break-word; overflow-wrap: anywhere; word-wrap: break-word; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.05); min-width: 0; box-sizing: border-box; }
+        .message-body pre, .message-body code { white-space: pre-wrap; word-break: break-all; overflow-x: auto; max-width: 100%; }
+        .sender-casca .message-body { border-left: 3px solid var(--gold); border-top-left-radius: 4px; }
+        .sender-agent .message-body { border-right: 3px solid var(--gold-dim); border-top-right-radius: 4px; background: rgba(212, 175, 55, 0.05); }
+        .message-info { font-size: 9px; color: var(--text-dim); margin-top: 4px; font-family: 'JetBrains Mono'; }
+        .sender-agent .message-info { text-align: right; }
+
+        .forge-container { display: flex; flex-direction: column; gap: 20px; overflow-y: auto; padding: 24px; min-height: 0; }
+        .proposal-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; position: relative; transition: var(--transition-smooth); }
+        .proposal-card:hover { transform: translateY(-5px) scale(1.02); border-color: var(--gold); box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8); }
+        .proposal-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gold-dim); border-radius: 16px 0 0 16px; }
+        .proposer-area { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .proposer-img { width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 1px solid var(--gold-dim); }
+        .proposer-img img { width: 100%; height: 100%; object-fit: cover; }
+        .proposer-tag { font-size: 9px; font-weight: 800; color: var(--gold); letter-spacing: 1.5px; }
+        .proposal-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--text-primary); border-bottom: 1px solid rgba(212, 175, 55, 0.1); padding-bottom: 8px; }
+        .proposal-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+        .proposal-card.approved::after { content: 'FORGED'; position: absolute; right: 20px; bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 900; color: var(--alert-green); border: 2px solid var(--alert-green); padding: 6px 16px; border-radius: 4px; transform: rotate(-12deg) scale(1.2); box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); letter-spacing: 3px; }
+        
+        .status-badge { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .status-new { background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
+        .status-pending { background: rgba(243, 156, 18, 0.2); color: var(--alert-amber); border: 1px solid rgba(243, 156, 18, 0.3); animation: pulse-blink 2s infinite; }
+        .status-done { background: rgba(46, 204, 113, 0.2); color: var(--alert-green); border: 1px solid rgba(46, 204, 113, 0.3); }
+        .source-tag { font-size: 8px; color: var(--text-dim); font-family: 'JetBrains Mono'; margin-top: 8px; display: block; }
+        
+        /* Proposal Action Buttons */
+        .proposal-actions { display: flex; gap: 10px; margin-top: 15px; }
+        
+        /* Forge Filter Buttons */
+        .forge-filter-group { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 5px; }
+        .filter-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-dim); font-size: 10px; padding: 4px 12px; border-radius: 6px; cursor: pointer; transition: var(--transition-smooth); font-family: 'JetBrains Mono', sans-serif; font-weight: 700; }
+        .filter-btn:hover { background: rgba(212, 175, 55, 0.15); color: var(--gold); border-color: rgba(212, 175, 55, 0.3); }
+        .filter-btn.active { background: rgba(212, 175, 55, 0.25); color: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+        .action-btn { 
+            flex: 1; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; 
+            cursor: pointer; transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .btn-dismiss { 
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-secondary); 
+        }
+        .btn-dismiss:hover { 
+            background: rgba(231, 76, 60, 0.1); border-color: rgba(231, 76, 60, 0.4); color: var(--alert-red); 
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+        }
+        .btn-approve { 
+            background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); color: var(--gold); 
+        }
+        .btn-approve:hover { 
+            background: rgba(212, 175, 55, 0.15); border-color: var(--gold); color: #fff;
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+        .proposal-card.approved .proposal-actions { display: none; }
+
+        .forge-divider { font-size: 10px; font-weight: 800; color: var(--gold-dim); margin: 20px 0 10px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .forge-divider::after { content: ''; flex-grow: 1; height: 1px; background: var(--border-color); }
+
+        #toast { position: fixed; top: 40px; left: 50%; transform: translateX(-50%) translateY(-100px); background: rgba(212, 175, 55, 0.95); backdrop-filter: blur(10px); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: 800; font-size: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 10000; }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div id="toast"><i class="fa-solid fa-fire-glow"></i> 軍命を承った。ターミナルに発令せよ。</div>
+    <div id="avatar-modal" class="modal-base" onclick="closeModal()">
+        <div class="modal-content avatar-modal-content" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" alt="肖像画">
+            <div class="modal-info">
+                <div id="modal-name" class="modal-name"></div>
+                <div id="modal-role" class="modal-role"></div>
+            </div>
+        </div>
+    </div>
+    <div id="log-modal" class="modal-base" onclick="closeLogModal()">
+        <div class="modal-content log-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div id="log-modal-date" class="modal-name"></div>
+                <button class="close-btn" onclick="closeLogModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="log-modal-body" class="log-content-body"></div>
+        </div>
+    </div>
+    <div class="dashboard-container">
+        <header class="glass-panel">
+            <div class="logo-area">
+                <img src="hawk_logo.webp" alt="Logo" class="logo-image">
+                <div class="logo-text">
+                    <h1>RICKERT</h1>
+                    <p>Hawk's Unit Tactical Monitor</p>
+                </div>
+            </div>
+            <div class="tactical-status">
+                <div class="indicator-group">
+                    <a id="gh-status" target="_blank" class="gh-status" style="display:none;"></a>
+                    <div class="sync-indicator sync-success" id="sync-status"><i class="fa-solid fa-satellite-dish"></i><span>兵站同期完了</span></div>
+                </div>
+                <div class="session-info">SESSION-2026.05.22</div>
+                <img src="assets/rickert_icon.png" alt="Rickert Unit" class="rickert-icon">
+            </div>
+        </header>
+        <main>
+            <section class="logistics-col">
+                <div class="glass-panel panel-padding">
+                    <h2 class="section-title"><span><i class="fa-solid fa-boxes-stacked"></i> 兵站状況</span></h2>
+                    <div class="resource-meter" style="margin-bottom:14px;"><div class="meter-label"><span><i class="fa-solid fa-brain"></i> 稼働AIモデル</span><span id="model-val" style="color:var(--gold); font-family:'JetBrains Mono'; font-weight:700; letter-spacing:0.5px;">Gemini 3.8 Flash (High)</span></div></div>
+                    <div class="resource-meter"><div class="meter-label"><span>トークン物資</span><span id="token-val">---</span></div><div class="progress-bar-container"><div class="progress-bar-fill" id="token-fill"></div></div></div>
+                    <div class="resource-meter"><div class="meter-label"><span>予算枠（リクエスト）</span><span id="req-val">---</span></div><div class="progress-bar-container"><div class="progress-bar-fill" id="req-fill"></div></div></div>
+                    <div class="resource-meter" style="margin-bottom:0;"><div class="meter-label"><span>週間兵站余力</span><span id="weekly-val">---</span></div><div class="progress-bar-container"><div class="progress-bar-fill" id="weekly-fill"></div></div></div>
+                </div>
+                <div class="glass-panel panel-padding" style="margin-top:20px; flex-shrink:0;">
+                    <h2 class="section-title"><span><i class="fa-solid fa-scroll"></i> 戦歴アーカイブ</span></h2>
+                    <div id="log-archive-list" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; padding-right:4px;">
+                        <div style="font-size:11px; opacity:0.5; text-align:center; padding:20px;">ログを収集しています...</div>
+                    </div>
+                </div>
+                <div class="glass-panel panel-padding" style="flex-grow:1; margin-top:20px; overflow:hidden; display:flex; flex-direction:column;">
+                    <h2 class="section-title"><span><i class="fa-solid fa-users-viewfinder"></i> 団員名簿</span></h2>
+                    <div class="roster-list" id="roster-list"></div>
+                </div>
+            </section>
+            <section class="glass-panel comm-col">
+                <div class="panel-padding" style="padding-bottom:0;">
+                    <h2 class="section-title">
+                        <span><i class="fa-solid fa-tower-broadcast"></i> 戦況通信ログ</span>
+                        <div style="display:flex; gap: 8px;">
+                            <button class="refresh-btn" onclick="exportTacticalLog()" title="戦況録をエクスポート"><i class="fa-solid fa-file-export"></i></button>
+                            <button class="refresh-btn" id="manual-refresh" onclick="fetchLogisticsData(true)" title="戦況を手動更新"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        </div>
+                    </h2>
+                </div>
+                <div class="chat-area" id="chat-area"></div>
+            </section>
+            <section class="glass-panel forge-col">
+                <div class="panel-padding" style="padding-bottom:0;">
+                    <h2 class="section-title"><span><i class="fa-solid fa-fire-burner"></i> リッケルトの鍛冶場</span></h2>
+                    <div class="forge-filter-group" style="align-items:center;">
+                        <button class="filter-btn active" id="btn-filter-all" onclick="setProposalFilter('all')">全件</button>
+                        <button class="filter-btn" id="btn-filter-pending" onclick="setProposalFilter('pending')">未対応のみ</button>
+                        <button class="filter-btn btn-batch-approve" style="margin-left:auto; background:rgba(212, 175, 55, 0.25); color:var(--gold); border-color:var(--gold); display:flex; align-items:center; gap:5px;" onclick="approveAllPendingProposals()"><i class="fa-solid fa-hammer"></i> 未対応を一括承認</button>
+                    </div>
+                </div>
+                <div class="forge-container" id="proposals-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Particle Soul
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [], animationId;
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        class Particle {
+            constructor() { this.init(); }
+            init() { this.x = Math.random() * canvas.width; this.y = canvas.height + Math.random() * 100; this.size = Math.random() * 2 + 0.5; this.speedY = Math.random() * -1 - 0.2; this.opacity = Math.random() * 0.4 + 0.1; this.color = Math.random() > 0.6 ? '#d4af37' : '#e67e22'; }
+            update() { this.y += this.speedY; this.opacity -= 0.001; if (this.opacity <= 0 || this.y < -10) this.init(); }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.globalAlpha = this.opacity; ctx.fill(); }
+        }
+        function initParticles() { particles = []; for (let i = 0; i < 60; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); animationId = requestAnimationFrame(animate); }
+        window.addEventListener('resize', resize); resize(); initParticles(); animate();
+
+        // Dashboard
+        let rosterData = [], commLogs = [], proposals = [], dailyLogs = [], lastTimestamp = "";
+        const nameMap = {
+            "g": "グリフィス団長", "c": "キャスカ", 
+            "gt": "ガッツ", "gs": "ガストン", 
+            "co": "コルカス", "p": "ピピン", 
+            "j": "ジュドー", "er": "エリカ",
+            "fa": "ファルネーゼ"
+        };
+
+        function renderLogs() {
+            const container = document.getElementById('log-archive-list');
+            if (dailyLogs.length === 0) {
+                container.innerHTML = '<div style="font-size:11px; opacity:0.5; text-align:center; padding:20px;">過去の戦歴は見当たりません。</div>';
+                return;
+            }
+            container.innerHTML = dailyLogs.map((l, idx) => `
+                <div class="log-item" onclick="openLogModal(${idx})">
+                    <div class="log-date"><i class="fa-solid fa-calendar-day"></i> ${l.date}</div>
+                    <div class="log-summary">${l.summary || '（概要なし）'}</div>
+                </div>
+            `).join('');
+        }
+
+        window.openLogModal = (idx) => {
+            const log = dailyLogs[idx];
+            if (!log) return;
+            const modal = document.getElementById('log-modal');
+            document.getElementById('log-modal-date').innerText = log.date + " 戦況録";
+            document.getElementById('log-modal-body').innerText = log.content;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        };
+
+        window.closeLogModal = () => {
+            const modal = document.getElementById('log-modal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 400);
+        };
+
+        function renderRoster() {
+            document.getElementById('roster-list').innerHTML = rosterData.map(m => {
+                const limit = 1500000;
+                const ratio = Math.min(100, (m.tokensUsed / limit) * 100);
+                const offset = 94 - (ratio * 0.94);
+                const color = ratio > 90 ? 'var(--alert-red)' : (ratio > 60 ? 'var(--alert-amber)' : 'var(--alert-green)');
+                const activeTag = m.activeFile ? `<div class="active-file-tag"><i class="fa-solid fa-hammer" style="font-size:7px; margin-right:4px;"></i>鍛造中: ${m.activeFile}</div>` : '';
+                const activeTaskTag = m.activeTask ? `<div class="active-task-tag"><i class="fa-solid fa-crosshairs" style="font-size:7px; margin-right:4px;"></i>${m.activeTask}</div>` : '';
+                const restLabel = ratio > 90 ? `<span class="rest-required-tag">REST REQUIRED</span>` : '';
+                let brandMark = '';
+                if (m.name && m.name.includes('ピピン')) {
+                    brandMark = `<div class="brand-mark-wrapper sealed" title="魔女の護符により封印されし烙印（グリフィス団長授与）"><img src="assets/brand_mark.png" class="brand-mark-icon"><span class="amulet-badge"><i class="fa-solid fa-shield-halved"></i></span></div>`;
+                } else if (m.isBranded) {
+                    brandMark = `<div class="brand-mark-wrapper" title="いけにえの烙印"><img src="assets/brand_mark.png" class="brand-mark-icon"></div>`;
+                }
+                return `
+                <div class="roster-item">
+                    <div class="member-avatar" onclick="openModal('${m.avatar}', '${m.name}', '${m.role}')"><img src="${m.avatar}" onerror="this.src='hawk_logo.webp'"></div>
+                    <div class="member-main">
+                        <div class="member-name">${m.name}${restLabel}</div>
+                        <div class="member-role">${m.role}</div>
+                        ${activeTag}
+                        ${activeTaskTag}
+                    </div>
+                    ${brandMark}
+                    <div class="circular-gauge ${ratio > 90 ? 'pulse-gauge' : ''}">
+                        <svg width="40" height="40"><circle class="gauge-bg" cx="20" cy="20" r="15"></circle><circle class="gauge-fill" cx="20" cy="20" r="15" style="stroke-dasharray:94; stroke-dashoffset:${offset}; stroke:${color};"></circle></svg>
+                        <span class="gauge-text">${Math.round(ratio)}%</span>
+                    </div>
+                </div>`}).join('');
+        }
+
+        function renderComms() {
+            const container = document.getElementById('chat-area');
+            container.innerHTML = commLogs.map(l => `
+                <div class="message-row ${l.sender === 'casca' ? 'sender-casca' : 'sender-agent'}">
+                    <div class="message-avatar"><img src="${l.avatar}" onerror="this.src='hawk_logo.webp'"></div>
+                    <div class="message-wrapper">
+                        <div class="message-body">${l.body}${l.embed ? `<div style="font-size:10px; margin-top:8px; opacity:0.6; font-family:'JetBrains Mono'; border-top:1px solid rgba(255,255,255,0.1); padding-top:6px;">${l.embed}</div>` : ''}</div>
+                        <div class="message-info">${l.name} • ${l.time}</div>
+                    </div>
+                </div>`).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        let currentProposalFilter = 'all';
+
+        function setProposalFilter(filter) {
+            currentProposalFilter = filter;
+            document.querySelectorAll('.forge-filter-group .filter-btn').forEach(btn => btn.classList.remove('active'));
+            if (filter === 'all') document.getElementById('btn-filter-all').classList.add('active');
+            if (filter === 'pending') document.getElementById('btn-filter-pending').classList.add('active');
+            renderProposals();
+        }
+
+        function renderProposals() {
+            let list = [...proposals].reverse();
+
+            if (currentProposalFilter === 'pending') {
+                list = list.filter(p => {
+                    const approved = localStorage.getItem('approved_' + p.desc) === 'true' || p.status === 'done' || p.status === '完了';
+                    return !approved;
+                });
+            }
+
+            const chatProposals = list.filter(p => !p.source);
+            const fileProposals = list.filter(p => p.source);
+
+            let html = '';
+
+            if (chatProposals.length > 0) {
+                html += chatProposals.map(p => renderProposalCard(p)).join('');
+            }
+
+            if (fileProposals.length > 0) {
+                if (chatProposals.length > 0) html += `<div class="forge-divider">鍛冶場の覚え書き</div>`;
+                html += fileProposals.map(p => renderProposalCard(p)).join('');
+            }
+
+            document.getElementById('proposals-container').innerHTML = html || '<div style="font-size:12px; opacity:0.5; text-align:center; margin-top:40px;">該当する提案はありません。</div>';
+        }
+
+        function renderProposalCard(p) {
+            const fullName = nameMap[p.proposer] || p.proposer || 'Casca';
+            const approved = localStorage.getItem('approved_'+p.desc) === 'true' || p.status === 'done';
+            const avatar = rosterData.find(m => m.name.toLowerCase().includes(fullName.toLowerCase()))?.avatar || 'assets/avatars/casca.png';
+            
+            let statusBadge = '';
+            if (p.status) {
+                const statusLabels = { 'new': '新規', 'pending': '鍛造待ち', 'done': '鍛造完了' };
+                statusBadge = `<span class="status-badge status-${p.status}">${statusLabels[p.status] || p.status}</span>`;
+            }
+
+            return `
+                <div class="proposal-card ${approved ? 'approved' : ''}">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                        <div class="proposer-area">
+                            <div class="proposer-img"><img src="${avatar}" onerror="this.src='hawk_logo.webp'"></div>
+                            <span class="proposer-tag">${fullName.toUpperCase()}</span>
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <div class="proposal-title">${p.title}</div>
+                    <div class="proposal-desc">${p.desc}</div>
+                    ${p.source ? `<span class="source-tag"><i class="fa-solid fa-file-code"></i> ${p.source}</span>` : ''}
+                    <div class="proposal-actions">
+                        <button class="action-btn btn-dismiss" onclick="this.closest('.proposal-card').remove()"><i class="fa-solid fa-ban"></i> 却下</button>
+                        <button class="action-btn btn-approve" onclick="approveProposal('${p.desc}', '${fullName}', '${p.title}')"><i class="fa-solid fa-hammer"></i> 鍛造 (承認)</button>
+                    </div>
+                </div>`;
+        }
+
+        function exportTacticalLog() {
+            if (commLogs.length === 0) return;
+            let exportText = "# 🦅 鷹の団 戦況通信ログ (Tactical Comms Log)\n\n";
+            exportText += `出力日時: ${new Date().toLocaleString()}\n`;
+            exportText += `対象セッション: ${document.querySelector('.session-info').innerText}\n\n---\n\n`;
+            
+            // commLogsは現在20件に制限されている場合があるため、全件であることを確認しつつ出力
+            commLogs.forEach(l => {
+                const body_clean = l.body.replace(/<[^>]*>?/gm, '');
+                exportText += `[${l.time}] **${l.name}**: ${body_clean}\n`;
+                if (l.embed) {
+                    const embed_clean = l.embed.replace(/<[^>]*>?/gm, '').replace(/\n/g, '\n> ');
+                    exportText += `> ${embed_clean}\n`;
+                }
+                exportText += "\n";
+            });
+            
+            const blob = new Blob([exportText], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url;
+            const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+            a.download = `tactical_log_${today}_manual.md`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            
+            const toast = document.getElementById('toast');
+            const originalHTML = toast.innerHTML;
+            toast.innerHTML = '<i class="fa-solid fa-file-export"></i> 全ログを緊急配布。本陣（logフォルダ）にも自動記録中だ。';
+            toast.className = 'show';
+            setTimeout(() => { toast.className = ''; setTimeout(() => toast.innerHTML = originalHTML, 400); }, 4000);
+        }
+
+        window.approveProposal = (desc, proposer, title) => {
+            localStorage.setItem('approved_'+desc, 'true'); renderProposals();
+            const cmd = `【軍命】${proposer}の改善提案『${title}』を承認した。直ちに実行に移せ！`;
+            navigator.clipboard.writeText(cmd).then(() => { document.getElementById('toast').className = 'show'; setTimeout(() => document.getElementById('toast').className = '', 4000); });
+        };
+
+        window.approveAllPendingProposals = () => {
+            let pendingList = proposals.filter(p => {
+                const approved = localStorage.getItem('approved_' + p.desc) === 'true' || p.status === 'done' || p.status === '完了';
+                return !approved;
+            });
+
+            if (pendingList.length === 0) {
+                const toast = document.getElementById('toast');
+                const orig = toast.innerHTML;
+                toast.innerHTML = '<i class="fa-solid fa-circle-check"></i> 未対応の改善提案はありません。';
+                toast.className = 'show';
+                setTimeout(() => { toast.className = ''; setTimeout(() => toast.innerHTML = orig, 400); }, 3000);
+                return;
+            }
+
+            pendingList.forEach(p => {
+                localStorage.setItem('approved_' + p.desc, 'true');
+            });
+            renderProposals();
+
+            let cmdLines = ["【軍命】以下の改善提案を一括承認した。直ちに実行に移せ！"];
+            pendingList.forEach((p, idx) => {
+                const fullName = nameMap[p.proposer] || p.proposer || 'Casca';
+                cmdLines.push(`${idx + 1}. [${fullName}] ${p.title}`);
+            });
+            const fullCmd = cmdLines.join("\n");
+
+            navigator.clipboard.writeText(fullCmd).then(() => {
+                const toast = document.getElementById('toast');
+                const orig = toast.innerHTML;
+                toast.innerHTML = `<i class="fa-solid fa-hammer"></i> 未対応の提案 ${pendingList.length}件を一括承認し、軍命をコピーしました！`;
+                toast.className = 'show';
+                setTimeout(() => { toast.className = ''; setTimeout(() => toast.innerHTML = orig, 400); }, 4000);
+            });
+        };
+
+        window.openModal = (img, name, role) => {
+            const modal = document.getElementById('avatar-modal');
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-name').innerText = name;
+            document.getElementById('modal-role').innerText = role;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        };
+
+        window.closeModal = () => {
+            const modal = document.getElementById('avatar-modal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 400);
+        };
+
+        let fetchTimeout;
+        async function fetchLogisticsData(manual = false) {
+            if (manual) document.getElementById('manual-refresh').classList.add('spinning');
+            const old = document.getElementById('data-script'); if (old) old.remove();
+            const script = document.createElement('script'); script.id = 'data-script'; script.src = 'logistics_data.js?t=' + Date.now();
+            script.onload = () => {
+                const data = window.RICKERT_DATA;
+                if (manual) setTimeout(() => document.getElementById('manual-refresh').classList.remove('spinning'), 500);
+                if (!data || (data.timestamp === lastTimestamp && !manual)) return;
+                lastTimestamp = data.timestamp;
+                if (data.active_model && document.getElementById('model-val')) {
+                    document.getElementById('model-val').innerText = data.active_model;
+                }
+                document.getElementById('token-val').innerText = `${data.total_tokens.toLocaleString()} / ${data.token_limit.toLocaleString()}`;
+                document.getElementById('token-fill').style.width = data.token_fill + '%';
+                document.getElementById('req-val').innerText = `${data.total_requests} / ${data.req_limit} 回`;
+                document.getElementById('req-fill').style.width = data.req_fill + '%';
+                const wv = document.getElementById('weekly-val'), wf = document.getElementById('weekly-fill');
+                if (wv && wf) { wv.innerText = `${data.weekly_left}%`; wf.style.width = data.weekly_left + '%'; }
+                rosterData = data.roster || []; renderRoster();
+                comm_logs_data = data.comm_logs || []; commLogs = comm_logs_data; renderComms();
+                proposals = data.proposals || []; renderProposals();
+                dailyLogs = data.daily_logs || []; renderLogs();
+                document.getElementById('sync-status').className = 'sync-indicator sync-success';
+
+                // Update GitHub Actions status
+                const gh = data.gh_actions;
+                const ghEl = document.getElementById('gh-status');
+                if (gh && ghEl) {
+                    ghEl.style.display = 'flex';
+                    ghEl.href = gh.html_url;
+                    let icon = 'fa-github', text = '本陣接続', cls = 'gh-success';
+                    if (gh.status === 'queued' || gh.status === 'in_progress') {
+                        icon = 'fa-truck-ramp-box'; text = '輸送中...'; cls = 'gh-working';
+                    } else if (gh.conclusion === 'success') {
+                        icon = 'fa-check-double'; text = '輸送完了'; cls = 'gh-success';
+                    } else if (gh.conclusion === 'failure') {
+                        icon = 'fa-skull-crossbones'; text = '輸送失敗'; cls = 'gh-failure';
+                    }
+                    ghEl.className = 'gh-status ' + cls;
+                    ghEl.innerHTML = `<i class="fa-solid ${icon}"></i><span>${text}</span>`;
+                }
+            };
+            script.onerror = () => { document.getElementById('sync-status').className = 'sync-indicator sync-error'; };
+            document.body.appendChild(script);
+            clearTimeout(fetchTimeout); fetchTimeout = setTimeout(fetchLogisticsData, 5000);
+        }
+        document.addEventListener('DOMContentLoaded', () => fetchLogisticsData());
+    </script>
+</body>
+</html>
