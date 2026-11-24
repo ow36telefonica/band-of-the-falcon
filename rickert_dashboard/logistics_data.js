@@ -1,12 +1,12 @@
 window.RICKERT_DATA = {
-    "timestamp": "2026-11-24 00:00:32",
+    "timestamp": "2026-11-25 00:29:04",
     "active_model": "Gemini 3.8 Flash (High)",
-    "total_tokens": 117955,
+    "total_tokens": 25573,
     "token_limit": 20000000,
-    "token_fill": 0.59,
-    "total_requests": 23,
+    "token_fill": 0.13,
+    "total_requests": 5,
     "req_limit": 1000,
-    "req_fill": 2.3,
+    "req_fill": 0.5,
     "weekly_left": 100,
     "roster": [
         {
@@ -24,8 +24,8 @@ window.RICKERT_DATA = {
             "role": "千人長 (司令塔)",
             "avatar": "assets/avatars/casca.png",
             "status": "done",
-            "tokensUsed": 71830,
-            "reqsUsed": 14,
+            "tokensUsed": 15345,
+            "reqsUsed": 3,
             "activeFile": "",
             "activeTask": "戦況把握・全軍統括"
         },
@@ -64,8 +64,8 @@ window.RICKERT_DATA = {
             "role": "輸送・デプロイ",
             "avatar": "assets/avatars/pippin.png",
             "status": "working",
-            "tokensUsed": 35834,
-            "reqsUsed": 7,
+            "tokensUsed": 10228,
+            "reqsUsed": 2,
             "activeFile": "",
             "activeTask": "特殊工作コマンド実行",
             "isBranded": false,
@@ -75,11 +75,11 @@ window.RICKERT_DATA = {
             "name": "ジュドー",
             "role": "偵察・外検",
             "avatar": "assets/avatars/judeau.png",
-            "status": "done",
-            "tokensUsed": 10291,
-            "reqsUsed": 2,
+            "status": "standby",
+            "tokensUsed": 0,
+            "reqsUsed": 0,
             "activeFile": "",
-            "activeTask": "構造・レイアウト自動外検"
+            "activeTask": "外部検証・構造自動点検"
         },
         {
             "name": "エリカ",
@@ -103,30 +103,6 @@ window.RICKERT_DATA = {
         }
     ],
     "comm_logs": [
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "10/29 00:10:41",
-            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
-            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 293）"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "10/29 00:11:43",
-            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
-            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 293）"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "10/29 00:30:46",
-            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
-            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 293）"
-        },
         {
             "sender": "casca",
             "name": "ピピン",
@@ -257,171 +233,6 @@ window.RICKERT_DATA = {
         },
         {
             "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:51:31",
-            "body": "<strong>【任務開始】コミット完了を確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:51:38",
-            "body": "<strong>【任務開始】ピピンによる成果物の git push origin main を実行します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:51:38",
-            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
-            "embed": "【工作内容】\n> git -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" push origin main"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:52:21",
-            "body": "グリフィス団長、ピピンがGitHub（origin/main）へのプッシュを実行中です。少々お待ちください。"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:52:50",
-            "body": "<strong>【任務開始】rule_checker.py のチェックロジック（scan_push_commitsおよび各検査関数）を確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:52:59",
-            "body": "<strong>【任務開始】check_file の詳細を確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:53:09",
-            "body": "<strong>【任務開始】rule_checker.py の basename 判定および includes 相対パス判定を修正します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:53:45",
-            "body": "<strong>【任務開始】rule_checker.py のリンク解決フォールバック部分を確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:54:05",
-            "body": "<strong>【任務開始】rule_checker.py にルート基準相対パスのフォールバックを追加します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ジュドー",
-            "avatar": "assets/avatars/judeau.png",
-            "time": "11/23 23:54:47",
-            "body": "<strong>【任務開始】rule_checker.py --git-pre-push を実行して事前検証します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ジュドー",
-            "avatar": "assets/avatars/judeau.png",
-            "time": "11/23 23:54:47",
-            "body": "<strong>ジュドー: 千里眼での偵察完了。外陣に異常はないよ。</strong>",
-            "embed": "【工作内容】\n> python \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\\scripts\\rule_checker.py\" --git-pre-push"
-        },
-        {
-            "sender": "casca",
-            "name": "ジュドー",
-            "avatar": "assets/avatars/judeau.png",
-            "time": "11/23 23:55:04",
-            "body": "<strong>【任務開始】rule_checker.py の改善を直前のコミットへ合流（amend）します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ジュドー",
-            "avatar": "assets/avatars/judeau.png",
-            "time": "11/23 23:55:04",
-            "body": "<strong>ジュドー: 千里眼での偵察完了。外陣に異常はないよ。</strong>",
-            "embed": "【工作内容】\n> git -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" add scripts/rule_checker.py\ngit -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" commit --amend --no-edit"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:55:19",
-            "body": "<strong>【任務開始】ピピンによる成果物の git push origin main を実行します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:55:19",
-            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
-            "embed": "【工作内容】\n> git -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" push origin main"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:55:57",
-            "body": "グリフィス団長、GitHub origin/main へのプッシュを実行中です。少々お待ちください。"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:56:37",
-            "body": "<strong>【任務開始】ピピンによる依頼管理表（Google Sheets No.44）のステータス更新（完了）を実行します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:56:37",
-            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
-            "embed": "【工作内容】\n> node C:\\Users\\xanth\\scripts\\sheet-manager\\manage-sheet.js update \"2026年度\" 47 7 \"index.php, result/2026.php, schedule/2026.php, report/index.php, repor"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:56:58",
-            "body": "グリフィス団長、Googleスプレッドシート（依頼管理表 No.44）を「完了」へ更新中です。少々お待ちください。"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:57:36",
-            "body": "<strong>【任務開始】修正確認ドキュメント（walkthrough.md）を作成します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "キャスカ",
-            "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:58:00",
-            "body": "<strong>【任務開始】task.md の全タスクを完了に更新します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
             "time": "11/23 23:58:07",
@@ -432,54 +243,47 @@ window.RICKERT_DATA = {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:58:32",
-            "body": "<strong>【任務開始】過去のデイリーログの保存場所とフォーマットを確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
+            "time": "11/24 00:08:47",
+            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
+            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 380）"
         },
         {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:58:32",
-            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
-            "embed": "【工作内容】\n> Get-ChildItem -Path \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\\docs\" -Filter \"*log*.md\""
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:58:59",
-            "body": "<strong>【任務開始】戦況ログフォルダを確認します。</strong>",
-            "embed": "🚨 団員が戦場へ投入されました"
-        },
-        {
-            "sender": "casca",
-            "name": "ピピン",
-            "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:58:59",
-            "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
-            "embed": "【工作内容】\n> Get-ChildItem -Path \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\戦況ログ\" | Select-Object -First 5 Name"
+            "time": "11/25 00:03:36",
+            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
+            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 390）"
         },
         {
             "sender": "casca",
             "name": "キャスカ",
             "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:59:16",
-            "body": "グリフィス団長、ログ保存場所の確認を実行中です。少々お待ちください。"
+            "time": "11/25 00:27:52",
+            "body": "<strong>【任務開始】task.md の全タスクを完了に更新します。</strong>",
+            "embed": "🚨 団員が戦場へ投入されました"
         },
         {
             "sender": "casca",
             "name": "キャスカ",
             "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:59:21",
-            "body": "<strong>【任務開始】デイリーログ（20261123-log.md）を自律作成します。</strong>",
+            "time": "11/25 00:28:03",
+            "body": "<strong>【任務開始】デイリーログ（20261125-log.md）を自律作成します。</strong>",
             "embed": "🚨 団員が戦場へ投入されました"
         },
         {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:59:36",
+            "time": "11/25 00:28:14",
+            "body": "<strong>【警報】ピピン: 依頼管理表（Google Sheets）の更新を検知しました。新たな任務が追加・変更された可能性があります。</strong>",
+            "embed": "シート全体のハッシュ値が変更されました（現在の行数: 390）"
+        },
+        {
+            "sender": "casca",
+            "name": "ピピン",
+            "avatar": "assets/avatars/pippin.png",
+            "time": "11/25 00:28:16",
             "body": "<strong>【任務開始】ドキュメント群の最終コミット＆プッシュを実行します。</strong>",
             "embed": "🚨 団員が戦場へ投入されました"
         },
@@ -487,7 +291,7 @@ window.RICKERT_DATA = {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/23 23:59:36",
+            "time": "11/25 00:28:16",
             "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
             "embed": "【工作内容】\n> git -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" add docs/\ngit -C \"C:\\Users\\xanth\\Dropbox\\個人請負\\品川区テニス連盟\\hp\" commit -m \"docs: complete task walkthrough"
         },
@@ -495,14 +299,14 @@ window.RICKERT_DATA = {
             "sender": "casca",
             "name": "キャスカ",
             "avatar": "assets/avatars/casca.png",
-            "time": "11/23 23:59:54",
-            "body": "グリフィス団長、ドキュメントおよび日誌のプッシュ完了を待機しております。少々お待ちください。"
+            "time": "11/25 00:28:38",
+            "body": "グリフィス団長、ドキュメント群のGitHubプッシュ完了を待機しております。少々お待ちください。"
         },
         {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/24 00:00:08",
+            "time": "11/25 00:28:44",
             "body": "<strong>【任務開始】鷹の団リソース自動同期（band-of-the-falcon）を実行します。</strong>",
             "embed": "🚨 団員が戦場へ投入されました"
         },
@@ -510,7 +314,7 @@ window.RICKERT_DATA = {
             "sender": "casca",
             "name": "ピピン",
             "avatar": "assets/avatars/pippin.png",
-            "time": "11/24 00:00:08",
+            "time": "11/25 00:28:44",
             "body": "<strong>ピピン: 特殊工作（コマンド実行）を遂行した。</strong>",
             "embed": "【工作内容】\n> if (Test-Path \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\") {\n    python \"C:\\Users\\xanth\\band-of-the-falcon\\auto_sync_push.py\"\n}"
         }
